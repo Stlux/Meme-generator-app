@@ -4,35 +4,27 @@ import ArrOfData from "../data/memes-data.js";
 
 export default function Form(){
 
-    const [pImg, setPImg] = useState({});
-    const [pAlt, stPAlt] = useState({});
+    const [pImg, setPImg] = useState(ArrOfData[0].data.memes[0].url); // intinal state image
+    const [pAlt, stPAlt] = useState(ArrOfData[0].data.memes[0].name); // intinal state alt text
+
     const [btnClickFirstTime, btnUpdate] = useState(true);
     const [firstChoosenRandomImg, countUpdate] = useState(0);
+
     const [msg, setMsg] = useState({topText: "Upper text", btmText: "Bottom text"});
 
-    let allApiData = {};
+    const [allApiData, allApiDataSet] = useState({});
     
     useEffect(() => {
         fetch("https://api.imgflip.com/get_memes")
             .then(res => res.json())
-            .then(data => {
-                for(let k in data){
-                    allApiData[k] = data[k];
-                }
-            })
-            .then(() => {
-                setPImg(allApiData.data.memes[0].url);
-                stPAlt(allApiData.data.memes[0].name);
-            });
+            .then(data => allApiDataSet(data));
     }, [])
-    
-    console.log(allApiData);
-
+        
     function randImg(){
 
             if(btnClickFirstTime){
 
-                let objOfdata = ArrOfData[0].data.memes;
+                let objOfdata = allApiData.data.memes;
                 let randImageFromMeme = Math.floor(Math.random() * objOfdata.length) 
                 
                 let img = objOfdata[randImageFromMeme].url
@@ -47,7 +39,7 @@ export default function Form(){
 
             }else{
 
-                let objOfdata = ArrOfData[0].data.memes;
+                let objOfdata = allApiData.data.memes;
 
                 let nextImageFromPrevImg = firstChoosenRandomImg;
 
@@ -63,8 +55,9 @@ export default function Form(){
                 setPImg(img)
                 stPAlt(alt)
 
-            }        
+            }      
     }
+    
 
 
     function form(event) {
