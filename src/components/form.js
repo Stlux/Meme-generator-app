@@ -1,57 +1,70 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import Meme from "./meme";
 import ArrOfData from "../data/memes-data.js";
 
 export default function Form(){
 
-    const [pImg, setPImg] = useState(ArrOfData[0].data.memes[0].url);
-    const [pAlt, stPAlt] = useState(ArrOfData[0].data.memes[0].name);
-
+    const [pImg, setPImg] = useState({});
+    const [pAlt, stPAlt] = useState({});
     const [btnClickFirstTime, btnUpdate] = useState(true);
     const [firstChoosenRandomImg, countUpdate] = useState(0);
+    const [msg, setMsg] = useState({topText: "Upper text", btmText: "Bottom text"});
+
+    let allApiData = {};
+    
+    useEffect(() => {
+        fetch("https://api.imgflip.com/get_memes")
+            .then(res => res.json())
+            .then(data => {
+                for(let k in data){
+                    allApiData[k] = data[k];
+                }
+            })
+            .then(() => {
+                setPImg(allApiData.data.memes[0].url);
+                stPAlt(allApiData.data.memes[0].name);
+            });
+    }, [])
+    
+    console.log(allApiData);
 
     function randImg(){
 
-        if(btnClickFirstTime){
+            if(btnClickFirstTime){
 
-            let objOfdata = ArrOfData[0].data.memes;
-            let randImageFromMeme = Math.floor(Math.random() * objOfdata.length) 
-            
-            let img = objOfdata[randImageFromMeme].url
-            let alt = objOfdata[randImageFromMeme].name
-            
-            countUpdate(randImageFromMeme + 1)
-            
-            setPImg(img)
-            stPAlt(alt)
-            
-            btnUpdate(false)
+                let objOfdata = ArrOfData[0].data.memes;
+                let randImageFromMeme = Math.floor(Math.random() * objOfdata.length) 
+                
+                let img = objOfdata[randImageFromMeme].url
+                let alt = objOfdata[randImageFromMeme].name
+                
+                countUpdate(randImageFromMeme + 1)
+                
+                setPImg(img)
+                stPAlt(alt)
+                
+                btnUpdate(false)
 
-        }else{
+            }else{
 
-            let objOfdata = ArrOfData[0].data.memes;
+                let objOfdata = ArrOfData[0].data.memes;
 
-            let nextImageFromPrevImg = firstChoosenRandomImg;
+                let nextImageFromPrevImg = firstChoosenRandomImg;
 
-            if (nextImageFromPrevImg >= objOfdata.length) {
-                nextImageFromPrevImg = 0; // Reset to the first image
-            }
+                if (nextImageFromPrevImg >= objOfdata.length) {
+                    nextImageFromPrevImg = 0; // Reset to the first image
+                }
 
-            let img = objOfdata[nextImageFromPrevImg].url;
-            let alt = objOfdata[nextImageFromPrevImg].name;
+                let img = objOfdata[nextImageFromPrevImg].url;
+                let alt = objOfdata[nextImageFromPrevImg].name;
 
-            countUpdate(nextImageFromPrevImg + 1)
-            
-            setPImg(img)
-            stPAlt(alt)
+                countUpdate(nextImageFromPrevImg + 1)
+                
+                setPImg(img)
+                stPAlt(alt)
 
-        }
-        
+            }        
     }
-
-    const [msg, setMsg] = useState({topText: "Upper text", btmText: "Bottom text"});
-
-    console.log(msg);
 
 
     function form(event) {
