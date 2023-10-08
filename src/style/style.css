@@ -8,7 +8,6 @@
     position: absolute;
     height: 400px;
     width: 400px;
-
     margin-left: auto;
     margin-right: auto;
 }
@@ -31,4 +30,22 @@
 
 .bottom-text{
     bottom: 0;
+}
+
+@media screen and (max-width: 410px) {
+
+    .img-wrapper{
+        height: 300px;
+        width: 300px;    
+    }
+    
+    .img-wrapper img{
+        height: 300px;
+        width: 300px;
+    }
+    
+    .text-wrapper{
+        height: 300px;
+    }
+    
 }

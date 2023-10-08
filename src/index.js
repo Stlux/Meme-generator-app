@@ -1,16 +1,15 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
+import {render} from 'react-dom'
 import Navbar from './components/navbar';
 import Form from './components/form';
-import Effect from './components/effect';
 
 import "./style/style.css";
 
-ReactDOM.render(
+render(
 
     <>
         <Navbar />
-        <Form />  
+        <Form />
     </>
 
     ,document.getElementById('root'));

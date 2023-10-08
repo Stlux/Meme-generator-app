@@ -15,9 +15,12 @@ export default function Form(){
     const [allApiData, allApiDataSet] = useState({});
     
     useEffect(() => {
-        fetch("https://api.imgflip.com/get_memes")
-            .then(res => res.json())
-            .then(data => allApiDataSet(data));
+        let func = async () => {
+            let data = await fetch("https://api.imgflip.com/get_memes")
+            let dataInJSON = await data.json();
+            allApiDataSet(dataInJSON);
+        }
+        func();
     }, [])
         
     function randImg(){
@@ -57,8 +60,6 @@ export default function Form(){
 
             }      
     }
-    
-
 
     function form(event) {
         setMsg(prevData => {
@@ -77,7 +78,7 @@ export default function Form(){
                     
                 </div>
                 <form className="w-full max-w-lg ml-auto mr-auto mt-10">
-                    <div className="flex flex-wrap -mx-3 mb-6 px-10">
+                    <div className="flex flex-wrap mx-3 mb-6 px-10">
                         <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                         <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
                             Text in the top
